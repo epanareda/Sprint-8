@@ -1,17 +1,17 @@
 <template>
   <div>
-    <starships-list/>
+    <starship-info/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import StarshipsList from '@/components/StarshipsList.vue'
+import StarshipInfo from '@/components/StarshipInfo.vue'
 
 export default {
-  name: 'StarshipsView',
+  name: 'StarshipView',
   components: {
-    StarshipsList
+    StarshipInfo
   }
 }
 </script>

@@ -3,11 +3,33 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     url: "https://swapi.dev/api/",
+    urlImage: "https://starwars-visualguide.com/assets/img/",
     union: "UNION;",
-    starships: ""
+    starships: "",
+    selectedStarship: "",
+    starshipImage: "",
+    starshipPilots: "",
+    starshipFilms: "",
   },
+
   getters: {
+    starships(state) {
+      return state.starships;
+    },
+    selectedStarship(state) {
+      return state.selectedStarship;
+    },
+    starshipImage(state) {
+      return state.starshipImage;
+    },
+    starshipPilots(state) {
+      return state.starshipPilots;
+    },
+    starshipFilms(state) {
+      return state.starshipFilms;
+    },
   },
+
   mutations: {
     addStarship(state, element) {
       const jsonStr = JSON.stringify(element)
@@ -21,21 +43,89 @@ export default createStore({
       
       // console.log(state.starships);
     },
-    resetData(state) {
+    selectStarship(state, val) {
+      let item = val.target;
+      while(item.type != "submit") {
+        item = item.parentNode;
+      }
+      state.selectedStarship = item.value;
+    },
+    setStarshipImage(state, element) {
+      state.starshipImage = element;
+    },
+    addStarshipPilot(state, element) {
+      const jsonStr = JSON.stringify(element)
+
+      if(state.starshipPilots === "") state.starshipPilots = jsonStr;
+      else {
+        const arr = state.starshipPilots.split(state.union);
+        arr.push(jsonStr);
+        state.starshipPilots = arr.join(state.union)
+      }
+    },
+    addStarshipFilm(state, element) {
+      const jsonStr = JSON.stringify(element)
+
+      if(state.starshipFilms === "") state.starshipFilms = jsonStr;
+      else {
+        const arr = state.starshipFilms.split(state.union);
+        arr.push(jsonStr);
+        state.starshipFilms = arr.join(state.union)
+      }
+    },
+    resetStarships(state) {
       state.starships = "";
-    }
+    },
+    resetStarshipPilots(state) {
+      state.starshipPilots = "";
+    },
+    resetStarshipFilms(state) {
+      state.starshipFilms = "";
+    },
   },
+
   actions: {
-    getInfo({commit, state}, type) {
+    getInfo({commit, state}, [type, mutation]) {
       fetch(`${state.url}${type}`)
         .then(response => response.json())
         .then(json => {
           json.results.forEach(result => {
-            commit("addStarship", result)
+            commit(mutation, result)
           })
         });
+    },
+    getImage({commit, state}, [type, mutation]) {
+      const obj = JSON.parse(state.selectedStarship);
+      fetch(`${state.urlImage}${type}/${
+        obj.url.split('/')[obj.url.split('/').length - 2]
+      }.jpg`)
+        .then(response => {
+          if(response.status === 404) commit(mutation, "404");
+          else commit(mutation, response.url);
+        })
+    },
+    getStarshipPilots({commit, state}, [type, mutation]) {
+      JSON.parse(state.selectedStarship).pilots.forEach(p => {
+        const obj = {};
+        obj["url"] = p;
+        fetch(`${state.urlImage}${type}/${
+          p.split('/')[p.split('/').length - 2]
+        }.jpg`)
+          .then(response => {
+            obj["image"] = response.url;
+            commit(mutation, obj);
+          });
+      })
+    },
+    getStarshipFilms({commit, state}) {
+      JSON.parse(state.selectedStarship).films.forEach(f => {
+        fetch(f)
+        .then(response => response.json())
+        .then(json => commit("addStarshipFilm", json));
+      });
     }
   },
+  
   modules: {
   }
 })
