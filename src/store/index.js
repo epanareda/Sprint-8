@@ -6,6 +6,7 @@ export default createStore({
     urlImage: "https://starwars-visualguide.com/assets/img/",
     union: "UNION;",
     starships: "",
+    nextPageStarships: "",
     selectedStarship: "",
     starshipImage: "",
     starshipPilots: "",
@@ -15,6 +16,9 @@ export default createStore({
   getters: {
     starships(state) {
       return state.starships;
+    },
+    nextPageStarships(state) {
+      return state.nextPageStarships;
     },
     selectedStarship(state) {
       return state.selectedStarship;
@@ -42,6 +46,9 @@ export default createStore({
       }
       
       // console.log(state.starships);
+    },
+    setNextPageStarships(stats, element) {
+      stats.nextPageStarships = element;
     },
     selectStarship(state, val) {
       let item = val.target;
@@ -76,6 +83,9 @@ export default createStore({
     resetStarships(state) {
       state.starships = "";
     },
+    resetNextPageStarships(state) {
+      state.nextPageStarships = "";
+    },
     resetStarshipPilots(state) {
       state.starshipPilots = "";
     },
@@ -92,6 +102,7 @@ export default createStore({
           json.results.forEach(result => {
             commit(mutation, result)
           })
+          if(type.substr(0,4)=="star")commit("setNextPageStarships", json.next);
         });
     },
     getImage({commit, state}, [type, mutation]) {
