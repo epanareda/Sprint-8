@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4">
+  <div class="m-4 d-flex flex-column align-items-center">
     <h1 class="mb-4">STARSHIPS</h1>
     <starship v-for="(starship, index) in toObjectArray(starships)" :key="index" :starship="starship"/>
     <!-- <button class="btn btn-primary" @click="loadNextPage">view more</button> -->
