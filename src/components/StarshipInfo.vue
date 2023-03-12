@@ -1,12 +1,8 @@
 <template>
   <div class="main-container">
-    <div class="position-relative div-width">
-      <button class="back-btn" @click="$router.push({name: 'home'})">
-        <p class="m-0">
-          Return
-        </p>
-      </button>
-      <h1 class="mb-4">{{starship.name}}</h1>
+    <div class="div-width position-relative">
+      <cool-button class="cool" text="RETURN" routeName="starships-list"/>
+      <h5 class="mt-2 mb-4 fw-bold">{{starship.name.toUpperCase()}}</h5>
     </div>
     <div v-if="starshipImage !== '404'" class="starship-img-container">
       <div class="piece-1"></div>
@@ -43,11 +39,10 @@
       <div class="piece-1"></div>
       <div class="piece-2"></div>
       <p class="m-0 text-start"><span>PILOTS: </span></p>
-      <div>
+      <div class="d-flex justify-content-center">
         <p class="m-0" v-if="starshipPilots === ''">UNKNOWN</p>
-        <button v-for="(pilot, index) in toObjectArray(starshipPilots)" :key="index" class="p-0 border-0 bg-white pilot-img me-2">
-          <img :src="pilot.image" alt="pilot">
-        </button>
+        <span class="ms-2" v-if="starshipPilots !== ''"></span>
+        <pilot v-for="(pilot, index) in toObjectArray(starshipPilots)" :key="index" :pilot="pilot"/>
       </div>
     </div>
     <div class="div-style div-width">
@@ -55,7 +50,7 @@
       <div class="piece-2"></div>
       <p class="m-0 text-start"><span>FILMS: </span></p>
       <div>
-        <p class="m-0" v-for="(film, index) in toObjectArray(starshipFilms)" :key="index">{{film.title}} (Episode {{film.episode_id}})</p>
+        <p class="m-0" v-for="(film, index) in toObjectArray(starshipFilms)" :key="index">{{film.title.toUpperCase()}} (EPISODE {{film.episode_id}})</p>
       </div>
     </div>
   </div>
@@ -63,10 +58,17 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
+import Pilot from "@/components/Pilot.vue";
+import CoolButton from './CoolButton.vue';
 
 export default {
   name: 'StarshipInfo',
-  computed: {
+  components: {
+    Pilot,
+    CoolButton,
+  },
+  computed: 
+    {
     ...mapGetters(["selectedStarship", "starshipImage", "starshipPilots", "starshipFilms"]),
     starship() {
       return JSON.parse(this.selectedStarship);
@@ -106,41 +108,25 @@ export default {
     align-items: center;
   }
 
-  .back-btn {
+  .cool {
     position: absolute;
     left: 0;
-    top: 0.5rem;
-    background-color: lightgrey;
-    border: 0;
-    padding: 0.5rem 1rem;
-    padding-left: 2rem;
-    border-radius: 10px;
-  }
-
-  .back-btn > p {
-    position: relative;
-  }
-
-  .back-btn > p::before {
-    position: absolute;
-    left: -1rem;
-    top: 0.3rem;
-    content: "";
-    border-bottom: 0.5rem solid black;
-    border-left: 0.5rem solid black;
-    border-top: 0.5rem solid transparent;
-    border-right: 0.5rem solid transparent;
-    rotate: 45deg;
+    top: -0.5rem;
+    width: 125px;
   }
 
   .starship-img-container {
+    width: 90%;
     position: relative;
     margin-bottom: 3rem;
   }
 
   .starship-img-container > img {
+    width: 100%;
+    border: 1rem solid rgb(35, 35, 35);
     border-bottom: 2rem solid rgb(35, 35, 35);
     border-top: 2rem solid rgb(35, 35, 35);
+    border-radius: 5px;
   }
 
   .div-width {
@@ -157,7 +143,7 @@ export default {
   .div-container {
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 43.5% 3% 53.5%;
+    grid-template-columns: 40% 2% 58%;
     text-align: start;
     margin-bottom: 2rem;
   }
@@ -245,9 +231,5 @@ export default {
   span {
     font-weight: bold;
     color:grey
-  }
-
-  .pilot-img > img {
-    width: 75px;
   }
 </style>

@@ -5,7 +5,7 @@
     <div class="light-1"></div>
     <div class="light-2"></div>
     <button class="m-0 border-0 text-start" @click="linkStarship" :value="JSON.stringify(starship)">
-      <h4>{{starship.name}}</h4>
+      <h5>{{starship.name.toUpperCase()}}</h5>
       <p class="m-0">{{starship.model}}</p>
     </button>
   </div>
@@ -38,14 +38,15 @@ export default {
     height: 100%;
     padding: 2rem 2rem;
 
-    background-color: rgb(100, 100, 100, 0.25);
+    background-color: rgb(35, 35, 35);
     color: lightgrey;
+    transition: 0.5s;
   }
 
   .light-1,
   .light-2 {
     position: absolute;
-    top: 20px;
+    top: 15px;
     height: 5px;
     background-color: grey;
     border-radius: 100px;
@@ -66,6 +67,10 @@ export default {
   div:hover > .light-2 {
     background-color: white;
     box-shadow: 0 0 1rem 0.25rem white;
+  }
+
+  div:hover > button {
+    color: white;
   }
 
   .piece-1 {
