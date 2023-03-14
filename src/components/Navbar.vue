@@ -26,7 +26,7 @@
                 <button class="search-container">
                     <p>SEARCH</p>
                 </button>
-                <button class="login-container">
+                <button class="login-container" @click="openCloseLogin">
                     <p>SIGN IN</p>
                 </button>
             </div>
@@ -40,8 +40,13 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from "vuex";
+
 export default {
-    
+    name: "Navbar",
+    methods: {
+        ...mapMutations(["openCloseLogin"]),
+    }
 }
 </script>
 

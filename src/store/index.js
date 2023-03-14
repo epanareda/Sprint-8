@@ -11,6 +11,12 @@ export default createStore({
     starshipImage: "",
     starshipPilots: "",
     starshipFilms: "",
+    login: "false",
+    signin: "true",
+    signinMsg: "This is some text just for testing",
+    signinMsgMeaning: "",
+    signinMsgShow: "false",
+    logedin: "false",
   },
 
   getters: {
@@ -31,6 +37,24 @@ export default createStore({
     },
     starshipFilms(state) {
       return state.starshipFilms;
+    },
+    login(state) {
+      return state.login === "true";
+    },
+    signin(state) {
+      return state.signin === "true";
+    },
+    signinMsg(state) {
+      return state.signinMsg;
+    },
+    signinMsgMeaning(state) {
+      return state.signinMsgMeaning;
+    },
+    signinMsgShow(state) {
+      return state.signinMsgShow === "true";
+    },
+    logedin(state) {
+      return state.logedin === "true";
     },
   },
 
@@ -79,6 +103,47 @@ export default createStore({
         arr.push(jsonStr);
         state.starshipFilms = arr.join(state.union)
       }
+    },
+    openCloseLogin(state) {
+      if(state.login === "false") state.signin = "true"; // Making sure on opening allways shaows sign in.
+      state.login = String(state.login === "false");
+    },
+    signinToSignup(state) {
+      state.signin = String(state.signin === "false");
+    },
+    createAccount(state, data){
+      if(Object.keys(localStorage).includes(data[0])) {
+        state.signinMsg = "This username already exist";
+        state.signinMsgMeaning = "error";
+      }
+      else {
+        localStorage.setItem(...data);
+        state.signinMsg = "The account has been created successfuly!";
+        state.signinMsgMeaning = "success";
+        state.login = "false";
+      }
+    },
+    loginAccount(state, data){
+      if(!Object.keys(localStorage).includes(data[0])) {
+        state.signinMsg = "This username doesn't exist";
+        state.signinMsgMeaning = "error";
+      }
+      else if(localStorage.getItem(data[0]) !== data[1]) {
+        state.signinMsg = "The password is incorrect";
+        state.signinMsgMeaning = "error";
+      }
+      else {
+        state.logedin = "true";
+        state.signinMsg = "Signed in successfuly!";
+        state.signinMsgMeaning = "success";
+        state.login = "false";
+      }
+    },
+    showRemoveMsg(state) {
+      state.signinMsgShow = String(state.signinMsgShow === "false");
+    },
+    logout(state) {
+      state.logedin = "false";
     },
     resetStarships(state) {
       state.starships = "";

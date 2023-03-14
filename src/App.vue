@@ -2,17 +2,27 @@
   <div>
     <div id="background"></div>
     <div id="background-color"></div>
+    <signin v-if="login"/>
+    <signin-message v-if="signinMsgShow" />
     <navbar/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import Navbar from '@/components/Navbar.vue'
+import Signin from '@/components/Signin.vue'
+import SigninMessage from '@/components/SigninMessage.vue'
 
 export default {
   components: {
     Navbar,
+    Signin,
+    SigninMessage,
+  },
+  computed: {
+    ...mapGetters(["login","signinMsgShow"]),
   }
 }
 </script>
