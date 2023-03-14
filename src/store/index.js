@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import router from '@/router';
 
 export default createStore({
   state: {
@@ -140,10 +141,15 @@ export default createStore({
       }
     },
     showRemoveMsg(state) {
-      state.signinMsgShow = String(state.signinMsgShow === "false");
+      state.signinMsgShow = "true";
+      setTimeout(() => state.signinMsgShow = "false", 1500);
     },
     logout(state) {
       state.logedin = "false";
+      state.signinMsg = "Loged out successfuly!";
+      state.signinMsgMeaning = "success";
+      if(router.currentRoute.value.name !== "home") state.login = "false";
+      router.push({name: "home"});
     },
     resetStarships(state) {
       state.starships = "";

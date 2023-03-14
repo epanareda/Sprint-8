@@ -53,7 +53,7 @@
                     <p>
                         Do you want to log out?
                     </p>
-                    <button class="submit-btn" @click="logout">
+                    <button class="submit-btn" @click="logoutMsg">
                         Log Out
                     </button>
                 </div>
@@ -72,15 +72,16 @@ export default {
     },
     methods: {
         ...mapMutations(["openCloseLogin", "signinToSignup", "createAccount", "loginAccount", "showRemoveMsg", "logout"]),
+        // Here there are 2 different methots just in case if conditions for the username and tha password have to be differents.
         checkUsername(el) {
-            if(el.value.trim() !== "" && el.value.trim().length !== 0) {
+            if(el.value.trim() !== "" && el.value.trim().length !== 0  && el.value.trim() === el.value) {
                 return true;
             }
             el.classList.add("input-error");
             el.parentNode.lastChild.classList.remove("error-text-inactive");
         },
         checkPassword(el) {
-            if(el.value.trim() !== "" && el.value.trim().length !== 0) {
+            if(el.value.trim() !== "" && el.value.trim().length !== 0  && el.value.trim() === el.value) {
                 return true;
             }
             el.classList.add("input-error");
@@ -89,15 +90,16 @@ export default {
         checkInputs(el) {
             const username = el.target.parentNode.previousSibling.previousSibling.previousSibling.firstChild;
             const passowrd = el.target.parentNode.previousSibling.firstChild;
-            if(this.checkUsername(username) === true && this.checkPassword(passowrd) === true) {
+            const usernameCorrect = this.checkUsername(username);
+            const passwordCorrect = this.checkPassword(passowrd);
+            if(usernameCorrect === true && passwordCorrect === true) {
                 if(this.signin) {
-                    this.loginAccount([username.value.trim(), passowrd.value.trim()]);
+                    this.loginAccount([username.value, passowrd.value]);
                 }
                 else {
-                    this.createAccount([username.value.trim(), passowrd.value.trim()]);
+                    this.createAccount([username.value, passowrd.value]);
                 }
                 this.showRemoveMsg();
-                setTimeout(this.showRemoveMsg, 1500);
             }
         },
         removeError(el) {
@@ -111,6 +113,10 @@ export default {
             });
             document.querySelectorAll(".error-text").forEach(e => e.classList.add("error-text-inactive"));
             this.signinToSignup();
+        },
+        logoutMsg() {
+            this.logout();
+            this.showRemoveMsg();
         }
     },
 }

@@ -5,20 +5,21 @@
             <div class="piece-2"></div>
             <h3>WELCOME</h3>
             <p>In this web page you can find different information related to the STAR WARS movies universe. There is some data about all the starships that appeared in the first 6 movies, and there is also data about the main characters that play an important role in this same 6 movies.</p>
+            <p><strong>IMPORTANT!</strong> If you wish to check all the amazing things that you can discover about the STAR WARS universe, make sure to sign in first. And if you don’t have an account yet, feel free to sign up for free.</p>
         </div>
         <div class="midle-row">
             <div class="section-container">
                 <div class="piece-1"></div>
                 <div class="piece-2"></div>
                 <h3>STARSHIPS</h3>
-                <p>All the information regarding the starships used in the STAR WARS films is very interesting. If you want to check it click in the following button!</p>
+                <p>All the information regarding the starships used in the STAR WARS films is very interesting. If you want to check it <i>(sign in required)</i> click in the following button!</p>
                 <cool-button class="mt-5" text="CHECK STARSHIPS" routeName="starships-list"/>
             </div>
             <div class="section-container">
                 <div class="piece-1"></div>
                 <div class="piece-2"></div>
                 <h3>CHARACTERS</h3>
-                <p>All the information regarding the main characters that appear in the STAR WARS films is very interesting. If you want to check it click in the following button!</p>
+                <p>All the information regarding the main characters that appear in the STAR WARS films is very interesting. If you want to check it <i>(sign in required)</i> click in the following button!</p>
                 <cool-button class="mt-5" text="CHECK CHARACTERS" routeName="home"/>
             </div>
         </div>
@@ -33,12 +34,25 @@
 
 <script>
 import CoolButton from "@/components/CoolButton.vue"
+import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
     name: "Home",
     components: {
         CoolButton,
-    }
+    },
+    computed: {
+        ...mapGetters(["login", "logedin"]),
+    },
+    methods: {
+        ...mapMutations(["openCloseLogin"]),
+        suggestLogin() {
+            if(this.logedin === false && this.login === false) this.openCloseLogin();
+        }
+    },
+    mounted() {
+        this.suggestLogin();
+    },
 }
 </script>
 
