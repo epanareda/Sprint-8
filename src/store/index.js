@@ -18,6 +18,8 @@ export default createStore({
     signinMsgMeaning: "",
     signinMsgShow: "false",
     logedin: "false",
+    selectedPilot: "",
+    pilotHomeworld: "",
   },
 
   getters: {
@@ -57,6 +59,12 @@ export default createStore({
     logedin(state) {
       return state.logedin === "true";
     },
+    selectedPilot(state) {
+      return state.selectedPilot;
+    },
+    pilotHomeworld(state) {
+      return state.pilotHomeworld;
+    }
   },
 
   mutations: {
@@ -151,6 +159,12 @@ export default createStore({
       if(router.currentRoute.value.name !== "home") state.login = "false";
       router.push({name: "home"});
     },
+    setPilot(state, element) {
+      state.selectedPilot = JSON.stringify(element);
+    },
+    setPilotHomeworld(state, element) {
+      state.pilotHomeworld = element;
+    },
     resetStarships(state) {
       state.starships = "";
     },
@@ -202,10 +216,34 @@ export default createStore({
     getStarshipFilms({commit, state}) {
       JSON.parse(state.selectedStarship).films.forEach(f => {
         fetch(f)
-        .then(response => response.json())
-        .then(json => commit("addStarshipFilm", json));
+          .then(response => response.json())
+          .then(json => commit("addStarshipFilm", json));
       });
-    }
+    },
+    getStarshipPilotInfo({commit, state}, url) {
+      const pilotInfo = {};
+      fetch(url)
+        .then(response => response.json())
+        .then(json => Object.keys(json).forEach(k => {
+          pilotInfo[k] = json[k];
+          commit("setPilot", pilotInfo);
+        }));
+
+      fetch(`${state.urlImage}characters/${
+        url.split('/')[url.split('/').length - 2]
+      }.jpg`)
+        .then(response => {
+          pilotInfo["image"] = response.url;
+          commit("setPilot", pilotInfo);
+        });
+    },
+    getPilotHomeworld({commit}, url) {
+      fetch(url)
+        .then(response => response.json())
+        .then(json => {
+          commit("setPilotHomeworld", json.name);
+        })
+    },
   },
   
   modules: {

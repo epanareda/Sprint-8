@@ -10,8 +10,8 @@
       <img class="starship-img" :src="starshipImage" alt="IMAGE NOT AVALIABLE AT THE MOMENT">
     </div>
     <div class="info-container div-style div-width">
-        <div class="piece-1"></div>
-        <div class="piece-2"></div>
+      <div class="piece-1"></div>
+      <div class="piece-2"></div>
       <p class="m-0"><span>MODEL: </span>{{setCorrectInfo(starship.model)}}</p>
       <p class="m-0"><span>STARSHIP CLASS: </span>{{setCorrectInfo(starship.starship_class)}}</p>
       <p class="m-0"><span>MANUFACTURER: </span>{{setCorrectInfo(starship.manufacturer)}}</p>
