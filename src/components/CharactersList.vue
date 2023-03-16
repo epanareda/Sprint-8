@@ -1,23 +1,23 @@
 <template>
   <div class="m-4 d-flex flex-column align-items-center">
-    <h1 class="mb-4">STARSHIPS</h1>
-    <starship v-for="(starship, index) in toObjectArray(starships)" :key="index" :starship="starship"/>
+    <h1 class="mb-4">CHARACTERS</h1>
+    <character v-for="(character, index) in toObjectArray(characters)" :key="index" :character="character"/>
     <!-- <button class="btn btn-primary" @click="loadNextPage">view more</button> -->
   </div>
 </template>
 
 <script>
-import Starship from '@/components/Starship.vue';
+import Character from '@/components/Character.vue';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'StarshipsList',
+  name: 'CharactersList',
   components: {
-    Starship
+    Character
   },
   mounted() {
     this.checkScroll();
-    if(this.nextPageStarships === "") this.getInfo(["starships", "addStarship"]);
+    if(this.nextPageCharacters === "") this.getInfo(["people", "addCharacter"]);
   },
   methods: {
     ...mapActions(["getInfo"]),
@@ -26,7 +26,7 @@ export default {
       return "";
     },
     loadNextPage() {
-      if(this.nextPageStarships !== null) this.getInfo(["star"+this.nextPageStarships.split("star")[1], "addStarship"]);
+      if(this.nextPageCharacters !== null) this.getInfo(["people"+this.nextPageCharacters.split("people")[1], "addCharacter"]);
     },
     checkScroll() {
       window.onscroll = () => {
@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["starships", "nextPageStarships"]),
+    ...mapGetters(["characters", "nextPageCharacters"]),
   },
 }
 </script>

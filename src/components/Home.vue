@@ -20,7 +20,7 @@
                 <div class="piece-2"></div>
                 <h3>CHARACTERS</h3>
                 <p>All the information regarding the main characters that appear in the STAR WARS films is very interesting. If you want to check it <i>(sign in required)</i> click in the following button!</p>
-                <cool-button class="mt-5" text="CHECK CHARACTERS" routeName="home"/>
+                <cool-button class="mt-5" text="CHECK CHARACTERS" routeName="characters-list"/>
             </div>
         </div>
         <div class="section-container">
@@ -34,7 +34,7 @@
 
 <script>
 import CoolButton from "@/components/CoolButton.vue"
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
     name: "Home",

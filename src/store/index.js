@@ -3,26 +3,41 @@ import router from '@/router';
 
 export default createStore({
   state: {
+    // common
     url: "https://swapi.dev/api/",
     urlImage: "https://starwars-visualguide.com/assets/img/",
     union: "UNION;",
+    
+    // starships
     starships: "",
+    currentPageStarships: "",
     nextPageStarships: "",
     selectedStarship: "",
     starshipImage: "",
     starshipPilots: "",
     starshipFilms: "",
+
+    // characters
+    characters: "",
+    currentPageCharacters: "",
+    nextPageCharacters: "",
+    selectedCharacter: "",
+    characterImage: "",
+    characterHomeworld: "",
+    characterStarships: "",
+    characterFilms: "",
+
+    // login
     login: "false",
     signin: "true",
     signinMsg: "This is some text just for testing",
     signinMsgMeaning: "",
     signinMsgShow: "false",
     logedin: "false",
-    selectedPilot: "",
-    pilotHomeworld: "",
   },
 
   getters: {
+    // starships
     starships(state) {
       return state.starships;
     },
@@ -41,6 +56,31 @@ export default createStore({
     starshipFilms(state) {
       return state.starshipFilms;
     },
+    
+    // characters
+    characters(state) {
+      return state.characters;
+    },
+    nextPageCharacters(state) {
+      return state.nextPageCharacters;
+    },
+    selectedCharacter(state) {
+      return state.selectedCharacter;
+    },
+    characterImage(state) {
+      return state.characterImage;
+    },
+    characterHomeworld(state) {
+      return state.characterHomeworld;
+    },
+    characterStarships(state) {
+      return state.characterStarships;
+    },
+    characterFilms(state) {
+      return state.characterFilms;
+    },
+
+    // login
     login(state) {
       return state.login === "true";
     },
@@ -59,15 +99,10 @@ export default createStore({
     logedin(state) {
       return state.logedin === "true";
     },
-    selectedPilot(state) {
-      return state.selectedPilot;
-    },
-    pilotHomeworld(state) {
-      return state.pilotHomeworld;
-    }
   },
 
   mutations: {
+    // starships
     addStarship(state, element) {
       const jsonStr = JSON.stringify(element)
 
@@ -77,8 +112,9 @@ export default createStore({
         arr.push(jsonStr);
         state.starships = arr.join(state.union)
       }
-      
-      // console.log(state.starships);
+    },
+    setCurrentPageStarships(stats, element) {
+      stats.currentPageStarships = element;
     },
     setNextPageStarships(stats, element) {
       stats.nextPageStarships = element;
@@ -113,6 +149,71 @@ export default createStore({
         state.starshipFilms = arr.join(state.union)
       }
     },
+    resetStarshipPilots(state) {
+      state.starshipPilots = "";
+    },
+    resetStarshipFilms(state) {
+      state.starshipFilms = "";
+    },
+    
+    // characters
+    addCharacter(state, element) {
+      const jsonStr = JSON.stringify(element)
+
+      if(state.characters === "") state.characters = jsonStr;
+      else {
+        const arr = state.characters.split(state.union);
+        arr.push(jsonStr);
+        state.characters = arr.join(state.union)
+      }
+    },
+    setCurrentPageCharacters(stats, element) {
+      stats.currentPageCharacters = element;
+    },
+    setNextPageCharacters(stats, element) {
+      stats.nextPageCharacters = element;
+    },
+    selectCharacter(state, val) {
+      let item = val.target;
+      while(item.type != "submit") {
+        item = item.parentNode;
+      }
+      state.selectedCharacter = item.value;
+    },
+    setCharacterImage(state, element) {
+      state.characterImage = element;
+    },
+    setCharacterHomeworld(state, element) {
+      state.characterHomeworld = element;
+    },
+    addCharacterStarship(state, element) {
+      const jsonStr = JSON.stringify(element)
+
+      if(state.characterStarships === "") state.characterStarships = jsonStr;
+      else {
+        const arr = state.characterStarships.split(state.union);
+        arr.push(jsonStr);
+        state.characterStarships = arr.join(state.union)
+      }
+    },
+    addCharacterFilm(state, element) {
+      const jsonStr = JSON.stringify(element)
+
+      if(state.characterFilms === "") state.characterFilms = jsonStr;
+      else {
+        const arr = state.characterFilms.split(state.union);
+        arr.push(jsonStr);
+        state.characterFilms = arr.join(state.union)
+      }
+    },
+    resetCharacterStarships(state) {
+      state.characterStarships = "";
+    },
+    resetCharacterFilms(state) {
+      state.characterFilms = "";
+    },
+
+    // login
     openCloseLogin(state) {
       if(state.login === "false") state.signin = "true"; // Making sure on opening allways shaows sign in.
       state.login = String(state.login === "false");
@@ -162,36 +263,35 @@ export default createStore({
     setPilot(state, element) {
       state.selectedPilot = JSON.stringify(element);
     },
-    setPilotHomeworld(state, element) {
-      state.pilotHomeworld = element;
-    },
-    resetStarships(state) {
-      state.starships = "";
-    },
-    resetNextPageStarships(state) {
-      state.nextPageStarships = "";
-    },
-    resetStarshipPilots(state) {
-      state.starshipPilots = "";
-    },
-    resetStarshipFilms(state) {
-      state.starshipFilms = "";
-    },
   },
 
   actions: {
     getInfo({commit, state}, [type, mutation]) {
-      fetch(`${state.url}${type}`)
-        .then(response => response.json())
-        .then(json => {
-          json.results.forEach(result => {
-            commit(mutation, result)
-          })
-          if(type.substr(0,4)=="star")commit("setNextPageStarships", json.next);
-        });
+      let run = false;
+      if((type.substr(0,4) == "star" && (state.currentPageStarships === "" || state.currentPageStarships !== state.nextPageStarships)) ||
+        (type.substr(0,4) == "peop" && (state.currentPageCharacters === "" || state.currentPageCharacters !== state.nextPageCharacters))) {
+          if(type === "starships") commit("setCurrentPageStarships", state.nextPageStarships);
+          else commit("setCurrentPageCharacters", state.nextPageCharacters);
+          run = true;
+      }
+
+      if(run) {
+          fetch(`${state.url}${type}`)
+            .then(response => response.json())
+            .then(json => {
+              json.results.forEach(result => {
+                commit(mutation, result)
+              })
+              if(type.substr(0,4) == "star") commit("setNextPageStarships", json.next);
+              else commit("setNextPageCharacters", json.next);
+            });
+        }
+      
     },
     getImage({commit, state}, [type, mutation]) {
-      const obj = JSON.parse(state.selectedStarship);
+      let obj = {};
+      if(type === "starships") obj = JSON.parse(state.selectedStarship);
+      else if(type === "characters") obj = JSON.parse(state.selectedCharacter);
       fetch(`${state.urlImage}${type}/${
         obj.url.split('/')[obj.url.split('/').length - 2]
       }.jpg`)
@@ -200,48 +300,84 @@ export default createStore({
           else commit(mutation, response.url);
         })
     },
-    getStarshipPilots({commit, state}, [type, mutation]) {
-      JSON.parse(state.selectedStarship).pilots.forEach(p => {
-        const obj = {};
-        obj["url"] = p;
-        fetch(`${state.urlImage}${type}/${
-          p.split('/')[p.split('/').length - 2]
+    getStarshipPilots({commit, state}) {
+      commit("resetStarshipPilots");
+      async function fetchPilot(url) {
+        const result = await fetch(url)
+          .then(response => response.json());
+        result["homeworld"] = await fetchHomeworldPilot(result["homeworld"]);
+        return result;
+      }
+      async function fetchHomeworldPilot(url) {
+        const result = await fetch(url)
+          .then(response => response.json());
+        return result.name
+      }
+      async function fetchPilotImage(url) {
+        const result = await fetch(`${state.urlImage}characters/${
+          url.split('/')[url.split('/').length - 2]
         }.jpg`)
           .then(response => {
-            obj["image"] = response.url;
-            commit(mutation, obj);
+            if(response.status === 404) return "404";
+            else return response.url;
           });
+        return {image: result};
+      }
+
+      JSON.parse(state.selectedStarship).pilots.map(async p => {
+        const pilotObj = await fetchPilot(p);
+        const pilotImgObj = await fetchPilotImage(p);
+        const result = {...pilotObj, ...pilotImgObj}
+        commit("addStarshipPilot", result);
       })
     },
-    getStarshipFilms({commit, state}) {
-      JSON.parse(state.selectedStarship).films.forEach(f => {
+    getCharacterStarships({commit, state}) {
+      commit("resetCharacterStarships");
+      state.characterStarships = "";
+      async function fetchStarship(s) {
+        const result = await fetch(s)
+          .then(response => response.json());
+        return result;
+      }
+      async function fetchStarshipImage(s) {
+        const result = await fetch(`${state.urlImage}starships/${
+          s.split('/')[s.split('/').length - 2]
+        }.jpg`)
+          .then(response => {
+            if(response.status === 404) return "404";
+            else return response.url;
+          });
+        return {image: result};
+      }
+
+      JSON.parse(state.selectedCharacter).starships.map(async s => {
+        const starshipObj = await fetchStarship(s);
+        const starshipImgObj = await fetchStarshipImage(s);
+        const result = {...starshipObj, ...starshipImgObj}
+        commit("addCharacterStarship", result);
+      })
+    },
+    getFilms({commit, state}, [type, mutation]) {
+      let obj = {};
+      if(type === "starships") {
+        commit("resetStarshipFilms");
+        obj = JSON.parse(state.selectedStarship);
+      }
+      else if(type === "characters") {
+        commit("resetCharacterFilms");
+        obj = JSON.parse(state.selectedCharacter);
+      }
+      obj.films.forEach(f => {
         fetch(f)
           .then(response => response.json())
-          .then(json => commit("addStarshipFilm", json));
+          .then(json => commit(mutation, json));
       });
     },
-    getStarshipPilotInfo({commit, state}, url) {
-      const pilotInfo = {};
-      fetch(url)
-        .then(response => response.json())
-        .then(json => Object.keys(json).forEach(k => {
-          pilotInfo[k] = json[k];
-          commit("setPilot", pilotInfo);
-        }));
-
-      fetch(`${state.urlImage}characters/${
-        url.split('/')[url.split('/').length - 2]
-      }.jpg`)
-        .then(response => {
-          pilotInfo["image"] = response.url;
-          commit("setPilot", pilotInfo);
-        });
-    },
-    getPilotHomeworld({commit}, url) {
+    getHomeworld({commit}, [url, mutation]) {
       fetch(url)
         .then(response => response.json())
         .then(json => {
-          commit("setPilotHomeworld", json.name);
+          commit(mutation, json.name);
         })
     },
   },

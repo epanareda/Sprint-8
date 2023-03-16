@@ -19,8 +19,8 @@ const routes = [
       if(store.getters.logedin) {
         next();
       } else {
-        // next();
-        next(false);
+        next();
+        // next(false);
       }
     }
   },
@@ -35,8 +35,40 @@ const routes = [
       if(store.getters.logedin) {
         next();
       } else {
-        // next();
-        next(false);
+        next();
+        // next(false);
+      }
+    }
+  },
+  {
+    path: '/characters-list',
+    name: 'characters-list',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/CharactersListView.vue'),
+    beforeEnter: (to, from, next) => {
+      if(store.getters.logedin) {
+        next();
+      } else {
+        next();
+        // next(false);
+      }
+    }
+  },
+  {
+    path: '/character',
+    name: 'character',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/CharacterView.vue'),
+    beforeEnter: (to, from, next) => {
+      if(store.getters.logedin) {
+        next();
+      } else {
+        next();
+        // next(false);
       }
     }
   }

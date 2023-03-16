@@ -1,48 +1,40 @@
 <template>
   <div class="main-container">
     <div class="div-width position-relative">
-      <cool-button class="cool" text="RETURN" routeName="starships-list"/>
-      <h5 class="mt-2 mb-4 fw-bold">{{starship.name.toUpperCase()}}</h5>
+      <cool-button class="cool" text="RETURN" routeName="characters-list"/>
+      <h5 class="mt-2 mb-4 fw-bold">{{character.name.toUpperCase()}}</h5>
     </div>
-    <div v-if="starshipImage !== '404'" class="starship-img-container">
-      <div class="piece-1"></div>
-      <div class="piece-2"></div>
-      <img class="starship-img" :src="starshipImage" alt="IMAGE NOT AVALIABLE AT THE MOMENT">
-    </div>
-    <div class="info-container div-style div-width">
-      <div class="piece-1"></div>
-      <div class="piece-2"></div>
-      <p class="m-0"><span>MODEL: </span>{{setCorrectInfo(starship.model)}}</p>
-      <p class="m-0"><span>STARSHIP CLASS: </span>{{setCorrectInfo(starship.starship_class)}}</p>
-      <p class="m-0"><span>MANUFACTURER: </span>{{setCorrectInfo(starship.manufacturer)}}</p>
-      <p class="m-0"><span>COST: </span>{{setCorrectInfo(starship.cost_in_credits, "CREDITS")}}</p>
+    <div v-if="characterImage !== '404'" class="character-img-container">
+        <div class="piece-1"></div>
+        <div class="piece-2"></div>
+        <img class="character-img" :src="characterImage" alt="IMAGE NOT AVALIABLE AT THE MOMENT">
     </div>
     <div class="div-container div-width">
-      <div class="div-1 div-style">
+      <div class="div-style">
         <div class="piece-1"></div>
         <div class="piece-2"></div>
-        <p class="m-0"><span>CREW: </span>{{setCorrectInfo(starship.crew)}}</p>
-        <p class="m-0"><span>PASSENGER CAPACITY: </span>{{setCorrectInfo(starship.passengers)}}</p>
-        <p class="m-0"><span>CARGO CAPACITY: </span>{{setCorrectInfo(starship.cargo_capacity, "TONS")}}</p>
-        <p class="m-0"><span>CONSUMABLES: </span>{{setCorrectInfo(starship.consumables)}}</p>
+        <p class="m-0"><span>height: </span>{{setCorrectInfo(character.height, "meters")}}</p>
+        <p class="m-0"><span>mass: </span>{{setCorrectInfo(character.mass, "kg")}}</p>
+        <p class="m-0"><span>birth: </span>{{setCorrectInfo(character.birth_year)}}</p>
+        <p class="m-0"><span>gender: </span>{{setCorrectInfo(character.gender)}}</p>
       </div>
-      <div class="div-2 div-style">
+      <div class="div-style">
         <div class="piece-1"></div>
         <div class="piece-2"></div>
-        <p class="m-0"><span>LENGTH: </span>{{setCorrectInfo(starship.length, "METERS")}}</p>
-        <p class="m-0"><span>MAXIMUM ATMOSPHERING SPEED: </span>{{setCorrectInfo(starship.max_atmosphering_speed, "KM/H")}}</p>
-        <p class="m-0"><span>HYPERDRIVE RATING: </span>{{setCorrectInfo(starship.hyperdrive_rating)}}</p>
-        <p class="m-0"><span>MAXIMUM SPEED IN REALSPACE: </span>{{setCorrectInfo(starship.MGLT, "MGLT")}}</p>
+        <p class="m-0"><span>hair: </span>{{setCorrectInfo(character.hair_color)}}</p>
+        <p class="m-0"><span>skin: </span>{{setCorrectInfo(character.skin_color)}}</p>
+        <p class="m-0"><span>eye: </span>{{setCorrectInfo(character.eye_color)}}</p>
+        <p class="m-0"><span>homeworld: </span>{{setCorrectInfo(characterHomeworld)}}</p>
       </div>
     </div>
     <div class="div-style div-width">
       <div class="piece-1"></div>
       <div class="piece-2"></div>
-      <p class="m-0 text-start"><span>PILOTS: </span></p>
-      <div class="d-flex justify-content-center">
-        <p class="m-0" v-if="starshipPilots === ''">UNKNOWN</p>
-        <span class="ms-2" v-if="starshipPilots !== ''"></span>
-        <pilot v-for="(pilot, index) in toObjectArray(starshipPilots)" :key="index" :pilot="pilot"/>
+      <p class="m-0 text-start"><span>STARSHIPS: </span></p>
+      <div class="d-flex justify-content-center flex-column">
+        <p class="m-0" v-if="characterStarships === ''">UNKNOWN</p>
+        <span class="mt-4" v-if="characterStarships !== ''"></span>
+        <character-starship class="mb-4" v-for="(starship, index) in toObjectArray(characterStarships)" :key="index" :starship="starship"/>
       </div>
     </div>
     <div class="div-style div-width">
@@ -50,7 +42,7 @@
       <div class="piece-2"></div>
       <p class="m-0 text-start"><span>FILMS: </span></p>
       <div>
-        <p class="m-0" v-for="(film, index) in toObjectArray(starshipFilms)" :key="index">{{film.title.toUpperCase()}} (EPISODE {{film.episode_id}})</p>
+        <p class="m-0" v-for="(film, index) in toObjectArray(characterFilms)" :key="index">{{film.title.toUpperCase()}} (EPISODE {{film.episode_id}})</p>
       </div>
     </div>
   </div>
@@ -58,25 +50,25 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import Pilot from "@/components/Pilot.vue";
+import CharacterStarship from "@/components/CharacterStarship.vue";
 import CoolButton from './CoolButton.vue';
 
 export default {
-  name: 'StarshipInfo',
+  name: 'CharacterInfo',
   components: {
-    Pilot,
+    CharacterStarship,
     CoolButton,
   },
   computed: 
     {
-    ...mapGetters(["selectedStarship", "starshipImage", "starshipPilots", "starshipFilms"]),
-    starship() {
-      return JSON.parse(this.selectedStarship);
+    ...mapGetters(["selectedCharacter", "characterImage", "characterStarships", "characterFilms", "characterHomeworld"]),
+    character() {
+      return JSON.parse(this.selectedCharacter);
     }
   },
   methods: {
-    ...mapMutations(["setStarshipImage"]),
-    ...mapActions(["getImage", "getStarshipPilots", "getFilms"]),
+    ...mapMutations(["setCharacterImage"]),
+    ...mapActions(["getImage", "getCharacterStarships", "getFilms", "getHomeworld"]),
     toObjectArray(str) {
       if(str !== "") return str.split(this.$store.state.union).map(e => JSON.parse(e));
     },
@@ -86,10 +78,11 @@ export default {
     }
   },
   mounted() {
-    this.setStarshipImage("");
-    this.getImage(["starships", "setStarshipImage"]);
-    this.getStarshipPilots();
-    this.getFilms(["starships", "addStarshipFilm"]);
+    this.setCharacterImage("");
+    this.getImage(["characters", "setCharacterImage"]);
+    this.getHomeworld([this.character.homeworld, "setCharacterHomeworld"]);
+    this.getCharacterStarships();
+    this.getFilms(["characters", "addCharacterFilm"]);
     setTimeout(() => window.scrollTo(0, 0), "100");
   },
 }
@@ -113,13 +106,13 @@ export default {
     width: 125px;
   }
 
-  .starship-img-container {
-    width: 90%;
+  .character-img-container {
+    width: 300px;
     position: relative;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
-  .starship-img-container > img {
+  .character-img-container > img {
     width: 100%;
     border: 1rem solid rgb(35, 35, 35);
     border-bottom: 2rem solid rgb(35, 35, 35);
@@ -141,7 +134,8 @@ export default {
   .div-container {
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 40% 2% 58%;
+    grid-template-columns: 48% 48%;
+    gap: 4%;
     text-align: start;
     margin-bottom: 2rem;
   }
@@ -166,6 +160,10 @@ export default {
     padding: 2rem 2rem;
     position: relative;
     border-radius: 5px;
+  }
+
+  .div-style > p {
+    text-transform: uppercase;
   }
 
   .piece-1 {

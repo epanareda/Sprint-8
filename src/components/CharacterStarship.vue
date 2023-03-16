@@ -1,42 +1,44 @@
 <template>
   <div>
-    <button class="pilot-img" type="button" data-bs-toggle="modal" :data-bs-target="`#pilot-${pilot.name.replaceAll(' ', '-')}`">
+    <button class="pilot-img" type="button" data-bs-toggle="modal" :data-bs-target="`#starship-${starship.name.replaceAll(' ', '-')}`">
       <div class="piece-light-1"></div>
       <div class="piece-light-2"></div>
       <div class="light-1"></div>
       <div class="light-2"></div>
-      <img :src="pilot.image" alt="pilot">
+      <img v-if="starship.image !== '404'" :src="starship.image">
+      <div class="starship-label-container">
+        <p class="starship-name">{{starship.name}}</p>
+        <p class="starship-model">{{starship.model}}</p>
+      </div>
     </button>
 
-    <div class="modal fade" :id="`pilot-${pilot.name.replaceAll(' ', '-')}`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pilotModalLabel" aria-hidden="true">
+    <div class="modal fade" :id="`starship-${starship.name.replaceAll(' ', '-')}`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pilotModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content pilot-data-container">
           <div class="modal-header h5 fw-bold pilot-data-header">
             <p class="modal-title">{{setCorrectInfo("name")}}</p>
             <button type="button" class="btn btn-close btn-position" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="first-row-container">
-            <div class="pilot-data-img-container">
-              <div class="piece-light-3"></div>
-              <div class="piece-light-4"></div>
-              <img :src="pilot.image" alt="pilot">
-            </div>
-            <div class="data-container">
-              <div class="piece-1"></div>
-              <div class="piece-2"></div>
-              <p class="p-data"><span>MASS: </span>{{setCorrectInfo("mass", "KG")}}</p>
-              <p class="p-data"><span>HAIR: </span>{{setCorrectInfo("hair_color")}}</p>
-              <p class="p-data"><span>SKIN: </span>{{setCorrectInfo("skin_color")}}</p>
-              <p class="p-data"><span>EYE: </span>{{setCorrectInfo("eye_color")}}</p>
-            </div>
+          <div v-if="starship.image !== '404'" class="pilot-data-img-container">
+            <div class="piece-1"></div>
+            <div class="piece-2"></div>
+            <img :src="starship.image">
           </div>
           <div class="data-container">
             <div class="piece-1"></div>
             <div class="piece-2"></div>
-            <p class="p-data"><span>GENDER: </span>{{setCorrectInfo("gender")}}</p>
-            <p class="p-data"><span>HEIGHT: </span>{{setCorrectInfo("height", "METERS")}}</p>
-            <p class="p-data"><span>BIRTH: </span>{{setCorrectInfo("birth_year")}}</p>
-            <p class="p-data"><span>HOMEWORLD: </span>{{setCorrectInfo("homeworld")}}</p>
+            <p class="p-data"><span>model: </span>{{setCorrectInfo("model")}}</p>
+            <p class="p-data"><span>class: </span>{{setCorrectInfo("starship_class")}}</p>
+            <p class="p-data"><span>cost: </span>{{setCorrectInfo("cost_in_credits", "credits")}}</p>
+            <p class="p-data"><span>length: </span>{{setCorrectInfo("length", "meters")}}</p>
+          </div>
+          <div class="data-container">
+            <div class="piece-1"></div>
+            <div class="piece-2"></div>
+            <p class="p-data"><span>crewmembers: </span>{{setCorrectInfo("crew")}}</p>
+            <p class="p-data"><span>cargo capacity: </span>{{setCorrectInfo("cargo_capacity")}}</p>
+            <p class="p-data"><span>consumables: </span>{{setCorrectInfo("consumables")}}</p>
+            <p class="p-data"><span>hyperdrive rating: </span>{{setCorrectInfo("hyperdrive_rating")}}</p>
           </div>
         </div>
       </div>
@@ -47,11 +49,12 @@
 <script>
 export default {
   name: 'Pilot',
-  props: ["pilot"],
+  props: ["starship"],
   methods: {
     setCorrectInfo(key, units="") {
-      if(this.pilot[key] === "n/a" || this.pilot[key].toUpperCase() === "UNKNOWN") return "UNKNOWN";
-      return `${this.pilot[key]} ${units}`;
+      const e = this.starship[key];
+      if(e === "n/a" | e.toUpperCase() === "UNKNOWN") return "UNKNOWN";
+      return `${e.toUpperCase()} ${units}`;
     },
   },
 }
@@ -62,14 +65,41 @@ export default {
     position: relative;
     background-color: lightgrey;
     border: 0;
-    padding: 1rem 0.5rem;
+    padding: 1.5rem 0.5rem;
     margin-right: 1rem;
     border-radius: 5px;
+    width: 500px;
+    padding-left: 125px;
   }
 
   .pilot-img > img {
+    position: absolute;
+    top: calc(50% - 30px);
+    left: 15px;
     width: 90px;
+    height: 60px;
     border-radius: 5px;
+  }
+
+  .starship-label-container{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+  }
+
+  .starship-name{
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .starship-model{
+    color: black;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin: 0;
   }
 
   .piece-light-1 {
@@ -185,12 +215,12 @@ export default {
 
   .pilot-data-img-container {
     position: relative;
-    width: 125px;
+    width: 80%;
     margin: 1rem auto;
     margin-top: 0;
     background-color: rgb(35, 35, 35);
     border-radius: 5px;
-    padding: 1rem 0.5rem;
+    padding: 2rem 1rem;
     display: flex;
     align-items: center;
   }
@@ -199,13 +229,6 @@ export default {
     width: 100%;
     border-color: rgb(35, 35, 35);
     border-radius: 5px;
-  }
-
-  .first-row-container {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    gap: 1rem;
   }
 
   .data-container {
@@ -289,63 +312,5 @@ export default {
     border-left: 0.5rem solid lightgrey;
     border-top: 0.5rem solid transparent;
     border-right: 0.5rem solid transparent;
-  }
-  
-  .piece-light-3 {
-    position: absolute;
-    width: 30px;
-    height: 0.5rem;
-    top: 0;
-    left: 20px;
-    background-color: lightgrey;
-  }
-  
-  .piece-light-3::before {
-    position: absolute;
-    left: -0.5rem;
-    content: "";
-    border-bottom: 0.25rem solid transparent;
-    border-left: 0.25rem solid transparent;
-    border-top: 0.25rem solid lightgrey;
-    border-right: 0.25rem solid lightgrey;
-  }
-  
-  .piece-light-3::after {
-    position: absolute;
-    right: -0.5rem;
-    content: "";
-    border-bottom: 0.25rem solid transparent;
-    border-left: 0.25rem solid lightgrey;
-    border-top: 0.25rem solid lightgrey;
-    border-right: 0.25rem solid transparent;
-  }
-
-  .piece-light-4 {
-    position: absolute;
-    width: 30px;
-    height: 0.5rem;
-    bottom: 0;
-    right: 20px;
-    background-color: lightgrey;
-  }
-  
-  .piece-light-4::before {
-    position: absolute;
-    left: -0.5rem;
-    content: "";
-    border-bottom: 0.25rem solid lightgrey;
-    border-left: 0.25rem solid transparent;
-    border-top: 0.25rem solid transparent;
-    border-right: 0.25rem solid lightgrey;
-  }
-  
-  .piece-light-4::after {
-    position: absolute;
-    right: -0.5rem;
-    content: "";
-    border-bottom: 0.25rem solid lightgrey;
-    border-left: 0.25rem solid lightgrey;
-    border-top: 0.25rem solid transparent;
-    border-right: 0.25rem solid transparent;
   }
 </style>

@@ -34,13 +34,14 @@
         <nav class="d-felx justify-content-center text-center">
             <router-link :class="['link', $route.name === 'home' ? 'link-active' : '']" to="/">HOME</router-link>
             <router-link :class="['link', $route.name === 'starships-list' ? 'link-active' : '']" to="/starships-list">STARSHIPS</router-link>
+            <router-link :class="['link', $route.name === 'characters-list' ? 'link-active' : '']" to="/characters-list">CHARACTERS</router-link>
         </nav>
         <!-- {{$route.name}} -->
     </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
     name: "Navbar",
