@@ -57,16 +57,21 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
     name: "Navbar",
+    computed: {
+        ...mapGetters(["login", "logedin"]),
+    },
     methods: {
         ...mapMutations(["openCloseLogin"]),
         closeNavbar() {
+            console.log(this.logedin);
             if(getComputedStyle(document.querySelector(".coll-right-header-container")).display == "flex") {
                 document.querySelector(".btn-skin").click();
             }
+            if(this.logedin === false && this.login === false) this.openCloseLogin();
         }
     }
 }

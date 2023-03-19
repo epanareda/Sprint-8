@@ -22,6 +22,7 @@ export default {
   mounted() {
     // this.checkScroll();
     if(this.nextPageCharacters === "") this.getInfo(["people", "addCharacter"]);
+    setTimeout(() => window.scrollTo(0, 0), "100");
   },
   methods: {
     ...mapActions(["getInfo"]),

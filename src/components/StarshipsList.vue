@@ -22,6 +22,7 @@ export default {
   mounted() {
     // this.checkScroll();
     if(this.nextPageStarships === "") this.getInfo(["starships", "addStarship"]);
+    setTimeout(() => window.scrollTo(0, 0), "100");
   },
   methods: {
     ...mapActions(["getInfo"]),

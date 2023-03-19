@@ -13,14 +13,14 @@
                 <div class="piece-2"></div>
                 <h3>STARSHIPS</h3>
                 <p>All the information regarding the starships used in the STAR WARS films is very interesting. If you want to check it <i>(sign in required)</i> click in the following button!</p>
-                <cool-button class="mt-5" text="CHECK STARSHIPS" routeName="starships-list"/>
+                <cool-button class="mt-5" text="CHECK STARSHIPS" routeName="starships-list" @click="suggestLogin()"/>
             </div>
             <div class="section-container">
                 <div class="piece-1"></div>
                 <div class="piece-2"></div>
                 <h3>CHARACTERS</h3>
                 <p>All the information regarding the main characters that appear in the STAR WARS films is very interesting. If you want to check it <i>(sign in required)</i> click in the following button!</p>
-                <cool-button class="mt-5" text="CHECK CHARACTERS" routeName="characters-list"/>
+                <cool-button class="mt-5" text="CHECK CHARACTERS" routeName="characters-list" @click="suggestLogin()"/>
             </div>
         </div>
         <div class="section-container">
