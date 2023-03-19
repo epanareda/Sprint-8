@@ -333,7 +333,7 @@ export default {
     }
 
     @media screen and (max-width: 525px) {
-        .signin-container-logedout {
+        .signin-container {
             --width: 100%;
         }
     }
