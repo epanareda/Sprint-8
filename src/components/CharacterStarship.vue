@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="pilot-img" type="button" data-bs-toggle="modal" :data-bs-target="`#starship-${starship.name.replaceAll(' ', '-')}`">
+    <button class="starship-img" type="button" data-bs-toggle="modal" :data-bs-target="`#starship-${starship.name.replaceAll(' ', '-')}`">
       <div class="piece-light-1"></div>
       <div class="piece-light-2"></div>
       <div class="light-1"></div>
@@ -12,14 +12,14 @@
       </div>
     </button>
 
-    <div class="modal fade" :id="`starship-${starship.name.replaceAll(' ', '-')}`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="pilotModalLabel" aria-hidden="true">
+    <div class="modal fade" :id="`starship-${starship.name.replaceAll(' ', '-')}`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="starshipModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content pilot-data-container">
-          <div class="modal-header h5 fw-bold pilot-data-header">
+        <div class="modal-content starship-data-container">
+          <div class="modal-header h5 fw-bold starship-data-header">
             <p class="modal-title">{{setCorrectInfo("name")}}</p>
             <button type="button" class="btn btn-close btn-position" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div v-if="starship.image !== '404'" class="pilot-data-img-container">
+          <div v-if="starship.image !== '404'" class="starship-data-img-container">
             <div class="piece-1"></div>
             <div class="piece-2"></div>
             <img :src="starship.image">
@@ -61,18 +61,17 @@ export default {
 </script>
 
 <style scoped>
-  .pilot-img {
+  .starship-img {
     position: relative;
     background-color: lightgrey;
     border: 0;
     padding: 1.5rem 0.5rem;
-    margin-right: 1rem;
     border-radius: 5px;
     width: 500px;
     padding-left: 125px;
   }
 
-  .pilot-img > img {
+  .starship-img > img {
     position: absolute;
     top: calc(50% - 30px);
     left: 15px;
@@ -180,20 +179,20 @@ export default {
     width: 5px;
   }
 
-  .pilot-img:hover > .light-1,
-  .pilot-img:hover > .light-2 {
+  .starship-img:hover > .light-1,
+  .starship-img:hover > .light-2 {
     background-color: rgb(200, 0, 0);
     box-shadow: 0 0 1rem 0.25rem red;
   }
 
-  .pilot-data-container {
+  .starship-data-container {
     height: auto;
     background-color: lightgrey;
     border-radius: 5px;
     padding-bottom: 1rem;
   }
 
-  .pilot-data-header {
+  .starship-data-header {
     text-align: center;
     position: relative;
     text-align: center;
@@ -203,7 +202,7 @@ export default {
     margin-bottom: 0;
   }
 
-  .pilot-data-header > p {
+  .starship-data-header > p {
     color: rgb(35, 35, 35);
   }
 
@@ -213,7 +212,7 @@ export default {
     right: 30px;
   }
 
-  .pilot-data-img-container {
+  .starship-data-img-container {
     position: relative;
     width: 80%;
     margin: 1rem auto;
@@ -225,7 +224,7 @@ export default {
     align-items: center;
   }
 
-  .pilot-data-img-container > img {
+  .starship-data-img-container > img {
     width: 100%;
     border-color: rgb(35, 35, 35);
     border-radius: 5px;
@@ -312,5 +311,27 @@ export default {
     border-left: 0.5rem solid lightgrey;
     border-top: 0.5rem solid transparent;
     border-right: 0.5rem solid transparent;
+  }
+
+  @media screen and (max-width: 991.5px) {
+    .starship-img {
+      width: 450px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .starship-img {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .starship-img {
+      padding: 1rem;
+    }
+
+    .starship-img > img {
+      display: none;
+    }
   }
 </style>

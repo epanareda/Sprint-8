@@ -1,8 +1,8 @@
 <template>
   <div class="main-container">
     <div class="div-width position-relative">
-      <cool-button class="cool" text="RETURN" routeName="starships-list"/>
-      <h5 class="mt-2 mb-4 fw-bold">{{starship.name.toUpperCase()}}</h5>
+      <cool-button class="cool" text="RETURN" routeName="starships-list" :black="true"/>
+      <h5 class="mt-5 mt-md-2 mb-0 fw-bold">{{starship.name.toUpperCase()}}</h5>
     </div>
     <div v-if="starshipImage !== '404'" class="starship-img-container">
       <div class="piece-1"></div>
@@ -39,10 +39,10 @@
       <div class="piece-1"></div>
       <div class="piece-2"></div>
       <p class="m-0 text-start"><span>PILOTS: </span></p>
-      <div class="d-flex justify-content-center">
+      <div class="d-flex flex-wrap justify-content-center align-items-center ">
         <p class="m-0" v-if="starshipPilots === ''">UNKNOWN</p>
-        <span class="ms-2" v-if="starshipPilots !== ''"></span>
-        <pilot v-for="(pilot, index) in toObjectArray(starshipPilots)" :key="index" :pilot="pilot"/>
+        <span class="ms-md-2" v-if="starshipPilots !== ''"></span>
+        <pilot class="mt-3 mt-md-0" v-for="(pilot, index) in toObjectArray(starshipPilots)" :key="index" :pilot="pilot"/>
       </div>
     </div>
     <div class="div-style div-width">
@@ -50,7 +50,7 @@
       <div class="piece-2"></div>
       <p class="m-0 text-start"><span>FILMS: </span></p>
       <div>
-        <p class="m-0" v-for="(film, index) in toObjectArray(starshipFilms)" :key="index">{{film.title.toUpperCase()}} (EPISODE {{film.episode_id}})</p>
+        <p class="m-0 mt-2 mt-sm-0" v-for="(film, index) in toObjectArray(starshipFilms)" :key="index">{{film.title.toUpperCase()}} (EPISODE {{film.episode_id}})</p>
       </div>
     </div>
   </div>
@@ -98,7 +98,7 @@ export default {
 <style scoped>
   .main-container {
     text-align: center;
-    width: 800px;
+    width: 100%;
     margin: 2rem auto;
 
     display: flex;
@@ -114,7 +114,7 @@ export default {
   }
 
   .starship-img-container {
-    width: 90%;
+    width: 100%;
     position: relative;
     margin-bottom: 3rem;
   }
@@ -128,7 +128,7 @@ export default {
   }
 
   .div-width {
-    width: 90%;
+    width: 100%;
     margin-bottom: 2rem;
   }
 
@@ -229,5 +229,39 @@ export default {
   span {
     font-weight: bold;
     color:grey
+  }
+
+  @media screen and (max-width: 991.5px) {
+    .div-container {
+      grid-template-columns: 100%;
+      gap: 2rem;
+      text-align: start;
+      margin-bottom: 2rem;
+    }
+
+    .div-1 {
+      grid-column: 1;
+    }
+
+    .div-2 {
+      grid-column: 1;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-container {
+      padding-top: 4rem;
+    }
+
+    .cool {
+      top: -4rem;
+      left: calc(50% - (125px / 2));
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .div-style {
+      font-size: 0.85rem;
+    }
   }
 </style>

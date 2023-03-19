@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
   .btn-container {
-    width: 500px;
+    width: 100%;
     position: relative;
   }
 
@@ -151,5 +151,15 @@ export default {
     border-left: 0.5rem solid black;
     border-top: 0.5rem solid transparent;
     border-right: 0.5rem solid transparent;
+  }
+
+  @media screen and (max-width: 576px) {
+    h5 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
   }
 </style>

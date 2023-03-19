@@ -58,13 +58,12 @@ export default {
 
 <style scoped>
     .main-container {
-        width: 800px;
+        width: 100%;
         margin: auto;
         margin-bottom: 3rem;
     }
 
     .section-container {
-        width: 100%;
         position: relative;
         background-color: rgb(35, 35, 35);
         padding: 3rem 2rem;
@@ -157,5 +156,16 @@ export default {
         border-left: 0.5rem solid black;
         border-top: 0.5rem solid transparent;
         border-right: 0.5rem solid transparent;
+    }
+
+    @media screen and (max-width: 768px) {
+        .midle-row {
+            flex-direction: column;
+            gap: 0 2rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
     }
 </style>

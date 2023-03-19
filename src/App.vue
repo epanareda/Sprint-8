@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div :class="[login ? (logedin ? 'singin-left-scroll-logedin' : 'singin-left-scroll-logedout'): '']">
     <div id="background"></div>
     <div id="background-color"></div>
-    <signin v-if="login"/>
+    <signin class="test" v-if="login"/>
     <signin-message v-if="signinMsgShow" />
     <navbar/>
-    <router-view/>
+    <router-view class="view-width"/>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import Navbar from '@/components/Navbar.vue'
 import Signin from '@/components/Signin.vue'
 import SigninMessage from '@/components/SigninMessage.vue'
@@ -22,7 +22,17 @@ export default {
     SigninMessage,
   },
   computed: {
-    ...mapGetters(["login","signinMsgShow"]),
+    ...mapGetters(["login", "logedin", "signinMsgShow"]),
+  },
+  watch: {
+    login(val) {
+      if(val) {
+        document.querySelector("body").classList.add("fixedPosition");
+      }
+      else {
+        document.querySelector("body").classList.remove("fixedPosition");
+      }
+    }
   }
 }
 </script>
@@ -52,5 +62,44 @@ export default {
     height: 100%;
     z-index: -1;
     background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .fixedPosition {
+    overflow-y: hidden;
+  }
+
+  .view-width {
+    width: 800px;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 991.5px) {
+    .view-width {
+      width: 700px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .view-width {
+      width: 550px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .view-width {
+      width: 95%;
+    }
+  }
+
+  @media screen and (max-height: 610px) {
+      .singin-left-scroll-logedout {
+          padding-right: 15px;
+      }
+  }
+
+  @media screen and (max-height: 420px) {
+      .singin-left-scroll-logedin {
+          padding-right: 15px;
+      }
   }
 </style>

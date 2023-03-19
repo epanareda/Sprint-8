@@ -37,6 +37,10 @@ export default createStore({
   },
 
   getters: {
+    union(state) {
+      return state.union;
+    },
+
     // starships
     starships(state) {
       return state.starships;

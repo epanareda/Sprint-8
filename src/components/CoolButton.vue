@@ -1,8 +1,8 @@
 <template>
   <div>
     <button class="cool-btn" @click="$router.push({name: routeName})">
-      <div class="piece-light-1"></div>
-      <div class="piece-light-2"></div>
+      <div :class="[black ? 'piece-dark-1' : 'piece-light-1']"></div>
+      <div :class="[black ? 'piece-dark-2' : 'piece-light-2']"></div>
       <div class="light-1"></div>
       <div class="light-2"></div>
       <p>{{text}}</p>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'CoolButton',
-  props: ["text" ,"routeName"],
+  props: ["text" ,"routeName", "black"],
 }
 </script>
 
@@ -33,6 +33,64 @@ export default {
     border-radius: 5px;
     color: black;
     font-weight: bold;
+  }
+
+  .piece-dark-1 {
+    position: absolute;
+    width: 30px;
+    height: 0.5rem;
+    top: 0;
+    left: 20px;
+    background-color: black;
+  }
+  
+  .piece-dark-1::before {
+    position: absolute;
+    left: -0.5rem;
+    content: "";
+    border-bottom: 0.25rem solid transparent;
+    border-left: 0.25rem solid transparent;
+    border-top: 0.25rem solid black;
+    border-right: 0.25rem solid black;
+  }
+  
+  .piece-dark-1::after {
+    position: absolute;
+    right: -0.5rem;
+    content: "";
+    border-bottom: 0.25rem solid transparent;
+    border-left: 0.25rem solid black;
+    border-top: 0.25rem solid black;
+    border-right: 0.25rem solid transparent;
+  }
+
+  .piece-dark-2 {
+    position: absolute;
+    width: 30px;
+    height: 0.5rem;
+    bottom: 0;
+    right: 20px;
+    background-color: black;
+  }
+  
+  .piece-dark-2::before {
+    position: absolute;
+    left: -0.5rem;
+    content: "";
+    border-bottom: 0.25rem solid black;
+    border-left: 0.25rem solid transparent;
+    border-top: 0.25rem solid transparent;
+    border-right: 0.25rem solid black;
+  }
+  
+  .piece-dark-2::after {
+    position: absolute;
+    right: -0.5rem;
+    content: "";
+    border-bottom: 0.25rem solid black;
+    border-left: 0.25rem solid black;
+    border-top: 0.25rem solid transparent;
+    border-right: 0.25rem solid transparent;
   }
 
   .piece-light-1 {
@@ -117,5 +175,12 @@ export default {
   .cool-btn:hover > .light-2 {
     background-color: rgb(200, 0, 0);
     box-shadow: 0 0 1rem 0.25rem red;
+  }
+
+  @media screen and (max-width: 576px) {
+    .cool-btn {
+      font-size: 0.8rem;
+      padding: 0.75rem 1rem;
+    }
   }
 </style>

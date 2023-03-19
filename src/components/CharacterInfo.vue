@@ -1,8 +1,8 @@
 <template>
   <div class="main-container">
     <div class="div-width position-relative">
-      <cool-button class="cool" text="RETURN" routeName="characters-list"/>
-      <h5 class="mt-2 mb-4 fw-bold">{{character.name.toUpperCase()}}</h5>
+      <cool-button class="cool" text="RETURN" routeName="characters-list" :black="true"/>
+      <h5 class="mt-5 mt-md-2 mb-0 mb-md-4 fw-bold">{{character.name.toUpperCase()}}</h5>
     </div>
     <div v-if="characterImage !== '404'" class="character-img-container">
         <div class="piece-1"></div>
@@ -91,7 +91,7 @@ export default {
 <style scoped>
   .main-container {
     text-align: center;
-    width: 800px;
+    width: 100%;
     margin: 2rem auto;
 
     display: flex;
@@ -121,7 +121,7 @@ export default {
   }
 
   .div-width {
-    width: 90%;
+    width: 100%;
     margin-bottom: 2rem;
   }
 
@@ -227,5 +227,46 @@ export default {
   span {
     font-weight: bold;
     color:grey
+  }
+
+  @media screen and (max-width: 991.5px) {
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-container {
+      padding-top: 4rem;
+    }
+
+    .cool {
+      top: -4rem;
+      left: calc(50% - (125px / 2));
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .character-img-container {
+      width: 100%;
+    }
+
+    .div-style {
+      font-size: 0.85rem;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    .div-container {
+      grid-template-columns: 100%;
+      gap: 2rem;
+      text-align: start;
+      margin-bottom: 2rem;
+    }
+
+    .div-1 {
+      grid-column: 1;
+    }
+
+    .div-2 {
+      grid-column: 1;
+    }
   }
 </style>

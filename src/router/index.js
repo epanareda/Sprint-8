@@ -19,8 +19,8 @@ const routes = [
       if(store.getters.logedin) {
         next();
       } else {
-        next();
-        // next(false);
+        // next();
+        next(false);
       }
     }
   },
@@ -35,8 +35,8 @@ const routes = [
       if(store.getters.logedin) {
         next();
       } else {
-        next();
-        // next(false);
+        // next();
+        next(false);
       }
     }
   },
@@ -51,8 +51,8 @@ const routes = [
       if(store.getters.logedin) {
         next();
       } else {
-        next();
-        // next(false);
+        // next();
+        next(false);
       }
     }
   },
@@ -67,8 +67,8 @@ const routes = [
       if(store.getters.logedin) {
         next();
       } else {
-        next();
-        // next(false);
+        // next();
+        next(false);
       }
     }
   }

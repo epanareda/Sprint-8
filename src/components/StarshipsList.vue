@@ -1,28 +1,32 @@
 <template>
-  <div class="m-4 d-flex flex-column align-items-center">
+  <div class="my-4 d-flex flex-column align-items-center">
     <h1 class="mb-4">STARSHIPS</h1>
-    <starship v-for="(starship, index) in toObjectArray(starships)" :key="index" :starship="starship"/>
-    <!-- <button class="btn btn-primary" @click="loadNextPage">view more</button> -->
+    <div class="list-container">
+      <starship class="list-item" v-for="(starship, index) in removeDuplicates(toObjectArray(starships))" :key="index" :starship="starship"/>
+    </div>
+    <cool-button v-if="nextPageStarships !== null" class="mt-4" @click="loadNextPage" text="VIEW MORE" :black="true"/>
   </div>
 </template>
 
 <script>
 import Starship from '@/components/Starship.vue';
+import CoolButton from '@/components/CoolButton.vue';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: 'StarshipsList',
   components: {
-    Starship
+    Starship,
+    CoolButton,
   },
   mounted() {
-    this.checkScroll();
+    // this.checkScroll();
     if(this.nextPageStarships === "") this.getInfo(["starships", "addStarship"]);
   },
   methods: {
     ...mapActions(["getInfo"]),
     toObjectArray(str) {
-      if(str !== "") return str.split(this.$store.state.union).map(e => JSON.parse(e));
+      if(str !== "") return str.split(this.union).map(e => JSON.parse(e));
       return "";
     },
     loadNextPage() {
@@ -37,13 +41,40 @@ export default {
           this.loadNextPage();
         }
       }
-    }
+    },
+    // Because an error that happens when the loading of the data is slow, and duplicates some retrived data, here is a function that removes this dupes.
+    removeDuplicates(arr) {
+      if(arr != "") {
+        return arr.filter((value, index) => {
+          const strValue = JSON.stringify(value);
+          return index === arr.findIndex(obj => {
+            return JSON.stringify(obj) === strValue;
+          });
+        });
+      }
+    },
   },
   computed: {
-    ...mapGetters(["starships", "nextPageStarships"]),
+    ...mapGetters(["union", "starships", "nextPageStarships"]),
   },
 }
 </script>
 
 <style scoped>
+  .list-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .list-item {
+    width: calc(50% - 0.5rem);
+  }
+
+  @media screen and (max-width: 768px) {
+    .list-item {
+      width: 100%;
+    }
+  }
 </style>

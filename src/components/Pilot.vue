@@ -205,6 +205,7 @@ export default {
     width: 80%;
     margin: 0 auto;
     display: flex;
+    align-items: center;
     gap: 1rem;
   }
 
@@ -347,5 +348,21 @@ export default {
     border-left: 0.25rem solid lightgrey;
     border-top: 0.25rem solid transparent;
     border-right: 0.25rem solid transparent;
+  }
+
+  @media screen and (max-width: 768px) {
+    .pilot-img > img {
+      width: 70px;
+    }
+
+    .light-1 {
+      width: 10px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .pilot-data-img-container {
+      max-height: 100%;
+    }
   }
 </style>
